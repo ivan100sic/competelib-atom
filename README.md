@@ -40,4 +40,8 @@ You can change these shortcuts by modifying the file `keymaps/competelib-atom.js
 
 Compilation errors and warnings will appear as highlighted text inside the source code, and also, you will receive a notification describing, in more detail, the errors themselves. You will also get notified of linker errors, if there are any. If you don't get any notification after a reasonable amount of time, perhaps the `g++` process crashed or the package is not correctly configured. In that case, first, read this README again, if that does not help, notify the package's author.
 
-You can add your own snippets, simply take a look at the sample snippets in the `snippets` folder and modify them to suit your need.
+## Adding snippets
+
+You can add your own snippets! First, take a look at the sample snippets in the `snippets` folder. The first line in each file should always be `'source.cpp'`, unless you want to add snippets for another language, of course. On the second level is the name of the snippet. Ideally, this should be a short description of it. Finally, `prefix` is what you should type in order for that snippet to be triggered, and `body` is the text that should be added.
+
+You can use placeholders `$1`, `$2`, etc. These are the "blanks" that you can fill in after triggering the snippet. If you have more than one placeholder with the same number, these will be filled in in parallel. For example, if the body contains `read($1.x, $1.y, $1.z)`, after triggering the snippet, the cursor will be in three places at the same time, and after typing `point`, you'll get `read(point.x, point.y, point.z)`. You can exit this multi-cursor mode by clicking anywhere in the editor or by pressing Esc. You can enter it manually if you hold `Ctrl+Alt` and click.
