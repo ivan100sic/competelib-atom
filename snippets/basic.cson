@@ -1,0 +1,33 @@
+'.source.cpp':
+	'all':
+		'prefix': 'all'
+		'body': 'begin($1), end($1)'
+
+	'basic_string':
+		'prefix': 'basic_string'
+		'body': 'basic_string'
+
+	'operator':
+		'prefix': 'operator'
+		'body': """
+			template<class T>
+			auto operator$1 (const T& b) const {
+				$2
+			}
+		"""
+
+	'struct':
+		'prefix': 'struct'
+		'body': """
+			struct $1 {
+				$2
+			};
+		"""
+
+	'unique':
+		'prefix': 'unique'
+		'body': """
+			sort(begin($1), end($1));
+			$1.erase(unique(begin($1), end($1)), end($1));
+			$2
+		"""

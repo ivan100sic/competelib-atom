@@ -1,9 +1,0 @@
-'.source.cpp':
-	'operator':
-		'prefix': 'operator'
-		'body': """
-			template<class T>
-			auto operator$1 (const T& b) const {
-				$2
-			}
-		"""

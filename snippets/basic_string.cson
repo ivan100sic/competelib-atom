@@ -1,4 +1,0 @@
-'.source.cpp':
-	'basic_string':
-		'prefix': 'basic_string'
-		'body': 'basic_string'

@@ -1,8 +1,0 @@
-'.source.cpp':
-	'unique':
-		'prefix': 'unique'
-		'body': """
-			sort(begin($1), end($1));
-			$1.erase(unique(begin($1), end($1)), end($1));
-			$2
-		"""
