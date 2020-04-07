@@ -7,6 +7,22 @@
 		'prefix': 'basic_string'
 		'body': 'basic_string'
 
+	'push_back':
+		'prefix': 'push_back'
+		'body': 'push_back'
+
+	'emplace_back':
+		'prefix': 'emplace_back'
+		'body': 'emplace_back'
+
+	'lower_bound':
+		'prefix': 'lower_bound'
+		'body': 'lower_bound'
+
+	'upper_bound':
+		'prefix': 'upper_bound'
+		'body': 'upper_bound'
+
 	'operator':
 		'prefix': 'operator'
 		'body': """
