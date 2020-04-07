@@ -31,3 +31,13 @@
 			$1.erase(unique(begin($1), end($1)), end($1));
 			$2
 		"""
+
+	'debugging':
+		'prefix': 'dbg'
+		'body': """
+			#ifdef LOCAL
+				#define dbg(x) (cerr << "ln " << __LINE__ << ": " << #x << " = " << (x) << '\\\\n')
+			#else
+				#define dbg(x)
+			#endif
+		"""
