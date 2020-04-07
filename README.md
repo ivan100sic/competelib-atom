@@ -16,19 +16,25 @@ In this case, do not install Atom on Ubuntu, install it on Windows. You'll use U
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt update
-sudo apt install gcc-9
+sudo apt install gcc-9 g++-9
 ```
 
 - On other Linux-based OSs, use your package manager to install gcc-9
 
 ## Setting up this package
 
-You're almost there! If you want to use another version of GCC, go to the `lib` folder of this package, open the file `competelib-atom.js` and modify the values at the top of the file.
+Download this repository's contents into `~/.atom/packages` on Linux or `C:\Users\(your username)\.atom\packages` on Windows. For example, this README should be in `C:\Users\(your username)\.atom\packages\competelib-atom\README.md`.
+
+You're almost there! If you want to use another version of GCC, go to the `lib` folder of this package, open the file `competelib-atom.js` and modify the value at the top of the file.
 
 ## Using this package
 
 - Use `ctrl+alt+k` to compile `.cpp` files in "Debug" mode
 - Use `ctrl+alt+o` to compile `.cpp` files in "Optimized" mode
+
+To run the compiled executable, open a terminal (Ubuntu window on Windows), change the current directory to the one containing `xyz.cpp` file, and run it by typing `./xyz`. In WSL, Windows directories are mapped as follows: `D:\Prog\cpp\` becomes `/mnt/d/Prog/cpp`. Note that on Linux, paths are name sensitive.
+
+**A feature to run your compiled executable from Atom is planned.**
 
 You can change these shortcuts by modifying the file `keymaps/competelib-atom.json`.
 
