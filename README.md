@@ -8,9 +8,9 @@ This README will guide you through the setup process. If some of these steps don
 
 In this case, do not install Atom on Ubuntu, install it on Windows. You'll use Ubuntu to build and run your programs written in C++. Why? Because the only decent GCC build for Windows - MinGW, has a lot of issues of its own. I recommend you stay away from it. You will not lose any performance and will easily be able to run multithreaded programs using WSL on Windows 10.
 
-- You'll need to set up `g++` version 9 or above on your Linux system (or subsystem if you're running Windows 10)
+- You'll need to set up GCC version 9 or above on your Linux system (or subsystem if you're running Windows 10)
 
-### Installing g++
+### Installing GCC
 
 - On Ubuntu, run the following commands to install gcc-9:
 ```
