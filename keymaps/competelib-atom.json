@@ -1,0 +1,6 @@
+{
+  "atom-workspace": {
+    "ctrl-alt-k": "competelib-atom:build-debug",
+    "ctrl-alt-o": "competelib-atom:build-o2"
+  }
+}

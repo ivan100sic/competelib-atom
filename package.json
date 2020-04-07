@@ -1,0 +1,21 @@
+{
+  "name": "competelib-atom",
+  "main": "./lib/competelib-atom",
+  "version": "0.0.1",
+  "description": "Improve your competitive programming performance!",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "competelib-atom:build-debug",
+      "competelib-atom:build-o2"
+    ]
+  },
+  "repository": "https://github.com/ivan100sic/competelib-atom",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
