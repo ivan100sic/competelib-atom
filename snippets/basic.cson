@@ -23,6 +23,18 @@
 		'prefix': 'upper_bound'
 		'body': 'upper_bound'
 
+	'break':
+		'prefix': 'break'
+		'body': 'break'
+
+	'continue':
+		'prefix': 'continue'
+		'body': 'continue'
+
+	'return':
+		'prefix': 'return'
+		'body': 'return'
+
 	'operator':
 		'prefix': 'operator'
 		'body': """
