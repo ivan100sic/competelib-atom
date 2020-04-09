@@ -1,0 +1,63 @@
+'.source.cpp':
+	'Variables with built-in I/O':
+		'prefix': 'iovar'
+		'body': """
+			template<class T>
+			struct in {
+				T x;
+				in () : x() { cin >> x; }
+				in (const T& x) : x(x) {}
+				in (T&& x) : x(x) {}
+				operator T& () { return x; }
+				operator const T& () const { return x; }
+			};
+
+			template<class T>
+			struct out {
+				T x;
+				out () : x() {}
+				out (const T& x) : x(x) {}
+				out (T&& x) : x(x) {}
+				operator T& () { return x; }
+				operator const T& () const { return x; }
+				~out() { cout << x << ' '; }
+			};
+
+			typedef in<int> iint;
+			typedef out<int> oint;
+			typedef in<ll> ill;
+			typedef out<ll> oll;
+			typedef in<string> istr;
+			typedef out<string> ostr;
+			typedef vector<int> vi;
+			typedef vector<iint> ivi;
+			typedef vector<oint> ovi;
+		"""
+
+	'Python-like range':
+		'prefix': 'rrange'
+		'body': """
+			template<class T>
+			struct rr {
+				struct valit {
+					T val;
+					valit(T x) : val(x) {}
+					T operator* () const { return val; }
+					T operator* () { return val; }
+					valit& operator++ () {
+						++val;
+						return *this;
+					}
+					bool operator != (const valit& other) const {
+						return val != other.val;
+					}
+				};
+
+				const valit l, r;
+				rr(T x) : l(0), r(x) {}
+				rr(T x, T y) : l(x), r(y) {}
+
+				valit begin() { return l; }
+				valit end() { return r; }
+			};
+		"""

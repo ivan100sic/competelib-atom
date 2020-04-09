@@ -1,0 +1,14 @@
+'.source.cpp':
+	'rng':
+		'prefix': 'rng'
+		'body': """
+			mt19937 eng(chrono::high_resolution_clock::now().time_since_epoch().count());
+		"""
+
+	'uniform_int_distribution':
+		'prefix': 'uniform_int_distribution'
+		'body': 'uniform_int_distribution'
+
+	'uniform_real_distribution':
+		'prefix': 'uniform_real_distribution'
+		'body': 'uniform_real_distribution'
