@@ -146,7 +146,7 @@
 				modint operator-- (int) { modint tmp = *this; --*this; return tmp; }
 				bool operator== (const modint& other) const { return x == other.x; }
 				bool operator!= (const modint& other) const {	return x != other.x; }
-				explicit operator int () const { return x; }
+				int operator() () const { return x; }
 				template<class T> modint operator^= (T n) { return *this = *this ^ n; }
 				modint inv() const { return *this ^ (m-2); }
 			};
