@@ -1,0 +1,6 @@
+'.source.cpp':
+	'Implicit segment tree':
+		'prefix': 'implicitsegtree'
+		'body': """
+
+		"""
