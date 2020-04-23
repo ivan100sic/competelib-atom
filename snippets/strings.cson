@@ -1,0 +1,6 @@
+'.source.cpp':
+	'Aho-Corasick algorithm':
+		'prefix': 'ahocorasick'
+		'body': """
+
+		"""
