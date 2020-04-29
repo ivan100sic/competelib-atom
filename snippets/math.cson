@@ -69,3 +69,30 @@
 				}
 			};
 		"""
+
+	'Binomials':
+		'prefix': 'binomial'
+		'body': """
+			template<class T = mint>
+			struct binomial {
+				vector<T> f, finv;
+
+				binomial(int n) : f(n), finv(n) {
+					f[0] = finv[0] = 1;
+					for (int i=1; i<n; i++) {
+						f[i] = f[i-1] * i;
+						finv[i] = f[i].inv();
+					}
+				}
+
+				mint mix(int a, int b) {
+					if (a < 0 || b < 0)
+						return 0;
+					return f[a+b] * finv[a] * finv[b];
+				}
+
+				mint choose(int n, int k) {
+					return mix(n-k, k);
+				}
+			};
+		"""
