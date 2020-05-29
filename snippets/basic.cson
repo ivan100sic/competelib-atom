@@ -88,3 +88,13 @@
 				ordered_set;
 			// find_by_order(size_t) -> iterator, order_of_key(val) -> size_t
 		"""
+
+	'Testcases':
+		'prefix': 'testcases'
+		'body': """
+			int t;
+			cin >> t;
+			while (t--) {
+				$1
+			}
+		"""
