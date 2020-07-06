@@ -2,5 +2,122 @@
 	'Implicit segment tree':
 		'prefix': 'implicitsegtree'
 		'body': """
+			template<class W, class T = int, class F = plus<T>>
+			struct implicit_segtree {
+				struct node { T v; int l; int r; };
+				typedef typename make_unsigned<W>::type Wu;
+				static inline W midpoint(W l, W r) { return l + (W)((Wu(r)-l) >> 1); }
+				static inline bool is_leaf(W l, W r) { return Wu(r)-l == 1; }
+				node dn() { return {e, ~0, ~0}; }
+				int nn() { a.emplace_back(dn()); return a.size() - 1; }
 
+				T e;
+				F f;
+				W rl, rr;
+				vector<node> a;
+
+				implicit_segtree(W rl, W rr, T e = T(), F f = F()) :
+					e(e), f(f), rl(rl), rr(rr), a(1, dn()) {}
+
+				template<class L>
+				int _au(W p, const T& v, int x, W xl, W xr, L op) {
+					if (!~x) x = nn();
+					if (is_leaf(xl, xr)) {
+						op(a[x].v, v);
+					} else {
+						W xm = midpoint(xl, xr);
+						if (p < xm) {
+							a[x].l = _au(p, v, a[x].l, xl, xm, op);
+						} else {
+							a[x].r = _au(p, v, a[x].r, xm, xr, op);
+						}
+						a[x].v = f(~a[x].l ? a[a[x].l].v : e, ~a[x].r ? a[a[x].r].v : e);
+					}
+					return x;
+				}
+
+				void add(W p, const T& v) {
+					_au(p, v, 0, rl, rr, [&](T& x, const T& y) { x = f(x, y); });
+				}
+
+				void update(W p, const T& v) {
+					_au(p, v, 0, rl, rr, [&](T& x, const T& y) { x = y; });
+				}
+
+				T get(W l, W r, int x, W xl, W xr) {
+					if (!~x || r <= xl || xr <= l)
+						return e;
+					if (l <= xl && xr <= r)
+						return a[x].v;
+					W xm = midpoint(xl, xr);
+					return f(get(l, r, a[x].l, xl, xm), get(l, r, a[x].r, xm, xr));
+				}
+
+				T operator() (W l, W r) { return get(l, r, 0, rl, rr); }
+			};
+		"""
+		
+	'Implicit segment tree with lazy updates':
+		'prefix': 'implicitsegtreelazy'
+		'body': """
+			template<class T, class U, class F, class G, class H, class W>
+			struct implicit_segtreelazy {
+				struct node { T v; U u; int l; int r; };
+				typedef typename make_unsigned<W>::type Wu;
+				static inline W midpoint(W l, W r) { return l + (W)((Wu(r)-l) >> 1); }
+				static inline bool is_leaf(W l, W r) { return Wu(r)-l == 1; }
+				node dn() { return {e, eu, ~0, ~0}; }
+				int nn() { a.emplace_back(dn()); return a.size() - 1; }
+
+				T e; U eu;
+				F f; G g; H h;
+				W rl, rr;
+				vector<node> a;
+
+				// Add two elements
+				// Add two updaters
+				// Add an element and an update
+				// index range
+				// Neutral element
+				// Neutral update
+				implicit_segtreelazy(F f, G g, H h, W rl, W rr, T e = T(), U eu = U()) :
+					e(e), eu(eu), f(f), g(g), h(h), rl(rl), rr(rr), a(1, dn()) {}
+
+				void push(int x, bool leaf) {
+					a[x].v = h(a[x].v, a[x].u);
+					if (!leaf) {
+						if (!~a[x].l) a[x].l = nn();
+						if (!~a[x].r) a[x].r = nn();
+						a[a[x].l].u = g(a[a[x].l].u, a[x].u);
+						a[a[x].r].u = g(a[a[x].r].u, a[x].u);
+					}
+					a[x].u = eu;
+				}
+
+				int update(W l, W r, const U& u, int x, W xl, W xr) {
+					if (r <= xl || xr <= l)
+						return push(x, is_leaf(xl, xr)), x;
+					if (l <= xl && xr <= r)
+						return a[x].u = g(a[x].u, u), push(x, is_leaf(xl, xr)), x;
+					push(x, is_leaf(xl, xr));
+					W xm = midpoint(xl, xr);
+					a[x].l = update(l, r, u, a[x].l, xl, xm);
+					a[x].r = update(l, r, u, a[x].r, xm, xr);
+					a[x].v = f(a[a[x].l].v, a[a[x].r].v);
+					return x;
+				}
+
+				T get(W l, W r, int x, W xl, W xr) {
+					if (r <= xl || xr <= l)
+						return e;
+					push(x, is_leaf(xl, xr));
+					if (l <= xl && xr <= r)
+						return a[x].v;
+					W xm = midpoint(xl, xr);
+					return f(get(l, r, a[x].l, xl, xm), get(l, r, a[x].r, xm, xr));
+				}
+
+				void update(W l, W r, const U& u) { update(l, r, u, 0, rl, rr); }
+				T operator() (W l, W r) { return get(l, r, 0, rl, rr); }
+			};
 		"""
