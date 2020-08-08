@@ -32,7 +32,7 @@ You're almost there! If you want to use another version of GCC, go to the `lib` 
 - Use `ctrl+alt+k` to compile `.cpp` files in "Debug" mode
 - Use `ctrl+alt+o` to compile `.cpp` files in "Optimized" mode
 
-To run the compiled executable, open a terminal (Ubuntu window on Windows), change the current directory to the one containing `xyz.cpp` file, and run it by typing `./xyz`. In WSL, Windows directories are mapped as follows: `D:\Prog\cpp\` becomes `/mnt/d/Prog/cpp`. Note that on Linux, paths are name sensitive.
+To run the compiled executable, open a terminal (Ubuntu window on Windows), change the current directory to the one containing `xyz.cpp` file, and run it by typing `./xyz`. In WSL, Windows directories are mapped as follows: `D:\Prog\cpp\` becomes `/mnt/d/Prog/cpp`. Note that on Linux, paths are case sensitive.
 
 **A feature to run your compiled executable from Atom is planned.**
 
