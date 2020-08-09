@@ -2,80 +2,85 @@
 	'Tree DP':
 		'prefix': 'treedp'
 		'body': """
-			template<class T, class D, class G, class F = plus<D>>
+			template<class T, class D, class E, class G, class U, class F = plus<D>>
 			struct tree_dp {
 				vector<T> a;
 				D e;
 				vector<D> up, dn, rt;
 				F f;
 				G g;
-				vector<int> p;
-				vector<vector<int>> h;
+			  U u;
+				vector<pair<int, E>*> p;
+				vector<vector<pair<int, E>>> h;
 
-				tree_dp(const vector<T>& a, D e, G g, F f = F()) : a(a), e(e),
-					up(a.size()), dn(a.size()), f(f), g(g), p(a.size()), h(a.size()) {}
+			  // a : vertex array - typed T
+			  // b : array of edges - typed E
+			  // g : (D, T) -> D - extends the sum of subtrees with the root vertex
+			  // u : (D, E) -> D - extends a subtree with an edge
+			  // e : neutral element of D
+			  // f : (D, D) -> D - adds together two (extended) subtrees
+				tree_dp(const vector<T>& a, const vector<tuple<int, int, E>>& b, G g, U u, D e = D(), F f = F()) :
+			    a(a), e(e), up(a.size()), dn(a.size()), f(f), g(g), u(u), p(a.size()), h(a.size())
+			  {
+			    for (auto [x, y, z] : b) {
+			      h[x].emplace_back(y, z);
+			      h[y].emplace_back(x, z);
+			    }
+			    dfs1(0, 0);
+			    dfs2(0);
+			    rt.resize(a.size());
+					rt[0] = dn[0];
+					for (int x=1; x<(int)a.size(); x++) {
+						D d = u(up[x], p[x]->second);
+			      for (auto& hh : h[x]) {
+			        auto& [y, w] = hh;
+			        if (y != p[x]->first)
+			          d = f(d, u(dn[y], w));
+			      }
+						rt[x] = g(d, a[x]);
+					}
+			  }
 
-				void add_edge(int x, int y) {
-					h[x].push_back(y);
-					h[y].push_back(x);
-				}
+			  D operator() (int x) { return rt[x]; }
 
-				void dfs1(int x) {
+				void dfs1(int x, int o) {
 					D d = e;
-					for (int y : h[x]) {
-						if (y == p[x])
-							continue;
-						p[y] = x;
-						dfs1(y);
-						d = f(d, dn[y]);
+					for (auto& hh : h[x]) {
+			      auto& [y, w] = hh;
+			      if (y == o) {
+			        p[x] = &hh;
+			        continue;
+			      }
+						dfs1(y, x);
+						d = f(d, u(dn[y], w));
 					}
 					dn[x] = g(d, a[x]);
 				}
 
 				void dfs2(int x) {
-					D d = x ? up[x] : e, t = e;
+					D d = x ? u(up[x], p[x]->second) : e, t = e;
 					int m = h[x].size() - !!x;
 					vector<D> pref(m, e);
 					int i = 0;
-					for (int y : h[x]) {
-						if (y == p[x])
-							continue;
+					for (auto& hh : h[x]) {
+			      auto& [y, w] = hh;
+						if (p[x] && p[x]->first == y) continue;
 						pref[i++] = t;
-						t = f(t, dn[y]);
+						t = f(t, u(dn[y], w));
 					}
-					t = e;
 					for (int j=(int)h[x].size()-1; j>=0; j--) {
-						int y = h[x][j];
-						if (y == p[x])
-							continue;
+			      auto& hh = h[x][j];
+			      auto& [y, w] = hh;
+						if (p[x] && p[x]->first == y) continue;
 						i--;
-						up[y] = g(f(pref[i], f(d, t)), a[x]);
-						t = f(t, dn[y]);
+						up[y] = g(f(pref[i], d), a[x]);
+						d = f(d, u(dn[y], w));
 					}
-					for (int y : h[x])
-						if (y != p[x])
-							dfs2(y);
-				}
-
-				void finish() {
-					rt.resize(a.size());
-					rt[0] = dn[0];
-					for (int x=1; x<(int)a.size(); x++) {
-						D d = up[x];
-						for (int y : h[x])
-							if (y != p[x])
-								d = f(d, dn[y]);
-						rt[x] = g(d, a[x]);
+			    for (auto& hh : h[x]) {
+			      auto& [y, w] = hh;
+						if (p[x] && p[x]->first == y) continue;
+			      dfs2(y);
 					}
-				}
-
-				D operator() (int x) {
-					if (rt.empty()) {
-						dfs1(0);
-						dfs2(0);
-						finish();
-					}
-					return rt[x];
 				}
 			};
 		"""
