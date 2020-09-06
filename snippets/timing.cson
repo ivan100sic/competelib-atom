@@ -1,5 +1,5 @@
 '.source.cpp':
-	'stopwatch':
+	'Stopwatch':
 		'prefix': 'stopwatch'
 		'body': """
 			using namespace chrono;
