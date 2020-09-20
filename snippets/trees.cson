@@ -383,7 +383,7 @@
 		"""
 
 	'Link-cut tree (subtree sum, Abelian groups)':
-		'prefix': 'linkcutnoncommutative'
+		'prefix': 'linkcutsubtreesum'
 		'body': """
 			template<class T = int, class F = plus<T>, class I = negate<T>>
 			struct link_cut_subtree_abelian {
