@@ -108,6 +108,22 @@
 					a[x].u = eu;
 				}
 
+				void set(int p, const T& v) {
+					int x = 1, xl = 0, xr = maxn;
+					while (xr-xl > 1) {
+						push(x);
+						int xm = (xl+xr) >> 1;
+						(p < xm ? xr : xl) = xm;
+						x = 2*x + (p >= xm);
+					}
+					a[x] = {v, eu};
+					do {
+						push(x^1);
+						x >>= 1;
+						a[x].v = f(a[2*x].v, a[2*x+1].v);
+					} while (x > 1);
+				}
+
 				void update(int l, int r, const U& u, int x, int xl, int xr) {
 					if (r <= xl || xr <= l)
 						return push(x);
