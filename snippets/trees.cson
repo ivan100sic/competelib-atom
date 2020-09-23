@@ -181,6 +181,130 @@
 			};
 		"""
 
+	'Implicit Li Chao tree':
+		'prefix': 'implicitlichao'
+		'body': """
+			template<class W, class T, bool maximize = false>
+			struct implicit_lichao {
+				struct line {
+					T k, b;
+					T operator() (W x) const { return k*x + b; }
+				};
+
+				struct node { line v; int l; int r; };
+				typedef typename make_unsigned<W>::type Wu;
+				static inline W midpoint(W l, W r) { return l + (W)((Wu(r)-l) >> 1); }
+				node dn() { return {{0, inf}, ~0, ~0}; }
+				int nn() { a.emplace_back(dn()); return a.size() - 1; }
+
+				W l, r;
+				T inf;
+				vector<node> a;
+				// always pass +inf regardless of @maximize
+				implicit_lichao(W l, W r, T inf) : l(l), r(r), inf(inf), a(1, dn()) {}
+
+				int add(line p, int x, W xl, W xr) {
+					if (!~x) x = nn();
+					if (a[x].v(xl) <= p(xl) && a[x].v(xr) <= p(xr))
+						return x;
+					if (p(xl) <= a[x].v(xl) && p(xr) <= a[x].v(xr))
+						return a[x].v = p, x;
+					if (p(xl) < a[x].v(xl))
+						swap(p, a[x].v);
+					int xm = midpoint(xl, xr);
+					a[x].l = add(p, a[x].l, xl, xm);
+					a[x].r = add(p, a[x].r, xm+1, xr);
+					return x;
+				}
+
+				implicit_lichao& operator+= (line p) {
+					if (maximize)
+						p.k = -p.k, p.b = -p.b;
+					add(p, 0, l, r);
+					return *this;
+				}
+
+				T operator() (W t) const {
+					T v = inf;
+					int x = 0;
+					W xl = l, xr = r;
+					while (~x) {
+						v = min(v, a[x].v(t));
+						W xm = midpoint(xl, xr);
+						if (t <= xm) {
+							x = a[x].l;
+							xr = xm;
+						} else {
+							x = a[x].r;
+							xl = xm + 1;
+						}
+					}
+					return maximize ? -v : v;
+				}
+			};
+		"""
+
+	'Persistent Li Chao tree':
+		'prefix': 'persistentlichao'
+		'body': """
+			template<class W, class T, bool maximize = false>
+			struct persistent_lichao {
+				struct line {
+					T k, b;
+					T operator() (W x) const { return k*x + b; }
+				};
+
+				struct node { line v; int l; int r; };
+				typedef typename make_unsigned<W>::type Wu;
+				static inline W midpoint(W l, W r) { return l + (W)((Wu(r)-l) >> 1); }
+				node dn() { return {{0, inf}, ~0, ~0}; }
+				int cn(int x = 0) { a.emplace_back(a[x]); return a.size() - 1; }
+
+				W l, r;
+				T inf;
+				vector<node> a;
+				// always pass +inf regardless of @maximize
+				persistent_lichao(W l, W r, T inf) : l(l), r(r), inf(inf), a(1, dn()) {}
+
+				int add(line p, int x, W xl, W xr) {
+					if (~x && a[x].v(xl) <= p(xl) && a[x].v(xr) <= p(xr))
+						return x;
+					x = cn(~x ? x : 0);
+					if (p(xl) <= a[x].v(xl) && p(xr) <= a[x].v(xr))
+						return a[x].v = p, x;
+					if (p(xl) < a[x].v(xl))
+						swap(p, a[x].v);
+					int xm = midpoint(xl, xr);
+					a[x].l = add(p, a[x].l, xl, xm);
+					a[x].r = add(p, a[x].r, xm+1, xr);
+					return x;
+				}
+
+				int add(int x, line p) {
+					if (maximize)
+						p.k = -p.k, p.b = -p.b;
+					return add(p, x, l, r);
+				}
+
+				T operator() (int x, W t) const {
+					T v = inf;
+					W xl = l, xr = r;
+					while (~x) {
+						v = min(v, a[x].v(t));
+						W xm = midpoint(xl, xr);
+						if (t <= xm) {
+							x = a[x].l;
+							xr = xm;
+						} else {
+							x = a[x].r;
+							xl = xm + 1;
+						}
+					}
+					return maximize ? -v : v;
+				}
+			};
+		"""
+
 	'Link-cut tree (commutative)':
 		'prefix': 'linkcutcommutative'
 		'body': """
