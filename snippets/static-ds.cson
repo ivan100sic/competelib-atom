@@ -237,6 +237,7 @@
 					T operator() (T x) const { return k*x + b; }
 				};
 
+				static inline int midpoint(int l, int r) { return l + ((r-l) >> 1); }
 				int l;
 				vector<line> a;
 				// always pass +inf regardless of @maximize
@@ -256,7 +257,7 @@
 					}
 					if (p(l+xl) < a[x](l+xl))
 						swap(p, a[x]);
-					int xm = (xl+xr) >> 1;
+					int xm = midpoint(xl, xr);
 					add(p, 2*x  , xl  , xm);
 					add(p, 2*x+1, xm+1, xr);
 				}
